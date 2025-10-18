@@ -6,9 +6,8 @@ import tkinter as tk
 from tkinter import *
 import customtkinter
 
-
 def chooseFile(entry):
-    dossier = filedialog.askdirectory(title="Sélectionnez un dossier")
+    dossier = customtkinter.filedialog.askdirectory(title="Sélectionnez un dossier")
 
     if dossier:  # Si l'utilisateur n'annule pas
         entry.delete(0, tk.END)  # Efface le champ texte
@@ -30,6 +29,9 @@ def main():
     tk.Label(text="Path").pack()
     path = tk.StringVar()
     entry = tk.Entry(root, textvariable=path)
+    entryPath = customtkinter.CTkEntry(
+        root,
+        textvariable=path)
     entry.pack(pady=10)
     buttonPath = customtkinter.CTkButton(
         root, 
@@ -43,7 +45,6 @@ def main():
     btnDownload = customtkinter.CTkButton(
         root,
         text="Download",
-        border_spacing=10,
         corner_radius=50,
         command=lambda: downloadPlaylist(url=url.get(), path=path.get())
     )

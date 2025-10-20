@@ -19,7 +19,6 @@ def downloadVideo(url: str, path: str):
     return True
 
 def downloadPlaylist(url: str, path: str):
-
     pl = Playlist(url)
     for video in pl.videos:
         print(video.title)
@@ -32,11 +31,13 @@ def downloadAny(url: str, path: str):
     except RegexMatchError:
         try:
             return downloadPlaylist(url, path)
-        except (RegexMatchError, KeyError):
-            print("Url is not a valid youtube url")
+        except (RegexMatchError, KeyError) as e:
+            return ("404: Url is not a valid youtube url", e)
         except Exception as e:
             print("downloadPlaylist: ", e)
+            return e
     except Exception as e:
         print("downloadVideo: ", e)
-    
+        return e
+
     return False

@@ -17,6 +17,10 @@ def _chooseFile(entry):
         entry.delete(0, tk.END)
         entry.insert(0, file)
 
+def _handleDownload(url, path, resultV):
+    result = downloadAny(url, path)
+    resultV.set(result[0])
+
 def _initRoot():
     root = tk.Tk()
     root.title("MP3 playlist downloader")
@@ -71,18 +75,26 @@ def app():
     buttonPath.pack(side="left") 
 
 
+    resultDownload = tk.StringVar(value="")
     btnDownload = customtkinter.CTkButton(
         root,
         text="Download",
         corner_radius=50,
         fg_color="#6272a4",
-        command=lambda: downloadAny(url=url.get(), path=path.get())
+        command=lambda: _handleDownload(url=url.get(), path=path.get(), resultV=resultDownload)
     )
     btnDownload.pack()
 
     # TODO: afficher la thumbnail de la video et le titre
 
     # TODO: afficher les logs d'erreur s'il y en a sans faire crash la fenetre
+    logError = tk.Label(
+        root,
+        textvariable=resultDownload,
+        font=("Arial", 15),
+        fg="red"
+        )
+    logError.pack()
 
     # TODO: afficher progression du téléchargement
 

@@ -16,21 +16,28 @@ def downloadVideo(url: str, path: str):
     print(yt.title)
     _downloadAudio(yt, path)
 
-    return True
+    return yt.title
 
 def downloadPlaylist(url: str, path: str):
     pl = Playlist(url)
+    listTitle = []
+
     for video in pl.videos:
         print(video.title)
         _downloadAudio(video, path)
-    return True
+        listTitle.append(video.title)
+
+    return listTitle
 
 def downloadAny(url: str, path: str):
+    title = ""
     try: 
-        return downloadVideo(url, path)
+        title = downloadVideo(url, path)
+        return f"Downloaded : {title}"
     except RegexMatchError:
         try:
-            return downloadPlaylist(url, path)
+            title = downloadPlaylist(url, path)
+            return f"Downloaded : {title} "
         except (RegexMatchError, KeyError) as e:
             return f"404: Url is not a valid youtube url {e}"
         except Exception as e:

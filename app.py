@@ -17,9 +17,9 @@ def _chooseFile(entry):
         entry.delete(0, tk.END)
         entry.insert(0, file)
 
-def _handleDownload(url, path, resultV):
+def _handleDownload(url, path, resultDownload):
     result = downloadAny(url, path)
-    resultV.set(result)
+    resultDownload.set(result)
 
 def _initRoot():
     root = tk.Tk()
@@ -74,29 +74,28 @@ def app():
     )
     buttonPath.pack(side="left") 
 
-
     resultDownload = tk.StringVar(value="")
+    logLabel = tk.Label(
+        root,
+        textvariable=resultDownload,
+        font=("Arial", 15),
+    )
     btnDownload = customtkinter.CTkButton(
         root,
         text="Download",
         corner_radius=50,
         fg_color="#6272a4",
-        command=lambda: _handleDownload(url=url.get(), path=path.get(), resultV=resultDownload)
+        command=lambda: _handleDownload(url=url.get(), path=path.get(), resultDownload=resultDownload)
     )
     btnDownload.pack()
+    logLabel.pack()
 
     # TODO: afficher la thumbnail de la video et le titre
-    logError = tk.Label(
-        root,
-        textvariable=resultDownload,
-        font=("Arial", 15),
-        fg="red"
-    )
-    logError.pack()
-
     # TODO: afficher progression du téléchargement
 
     tk.Label(root, text="Nothing will work unless you do.").pack()
     tk.Label(root, text="- Maya Angelou").pack()
 
     root.mainloop()
+
+    return 0

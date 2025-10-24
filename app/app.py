@@ -4,22 +4,11 @@
 
 Code that manage all the tkinter window
 """
-from download import downloadAny
+from utilsApp import chooseFile, handleDownload
 
 import tkinter as tk
 from tkinter import *
 import customtkinter
-
-def _chooseFile(entry):
-    file = customtkinter.filedialog.askdirectory(title="Sélectionnez un dossier")
-
-    if file:
-        entry.delete(0, tk.END)
-        entry.insert(0, file)
-
-def _handleDownload(url, path, resultDownload):
-    result = downloadAny(url, path)
-    resultDownload.set(result)
 
 def _initRoot():
     root = tk.Tk()
@@ -70,7 +59,7 @@ def app():
         text="Choose a folder", 
         corner_radius=50,
         fg_color="#6272a4",
-        command=lambda: _chooseFile(entryPath)
+        command=lambda: chooseFile(entryPath)
     )
     buttonPath.pack(side="left") 
 
@@ -85,13 +74,10 @@ def app():
         text="Download",
         corner_radius=50,
         fg_color="#6272a4",
-        command=lambda: _handleDownload(url=url.get(), path=path.get(), resultDownload=resultDownload)
+        command=lambda: handleDownload(url=url.get(), path=path.get(), resultDownload=resultDownload)
     )
     btnDownload.pack()
     logLabel.pack()
-
-    # TODO: afficher la thumbnail de la video et le titre
-    # TODO: afficher progression du téléchargement
 
     tk.Label(root, text="Nothing will work unless you do.").pack()
     tk.Label(root, text="- Maya Angelou").pack()

@@ -17,9 +17,12 @@ class Theme():
         return cls._instance
 
     def _init_theme(self):
+        self._lastWidthWindow = -1000
+
         # font init
         self._fontNormal = None
         self._fontTitle = None
+        self.fontNormalSize = 15
         
         # color init
         self.bgColor = "#282A36"
@@ -46,24 +49,29 @@ class Theme():
         return self._fontTitle
     
     def _onResizeFont(self, width):
-        actualSize = self.fontNormal.cget("size")
+        actualSize = self.fontNormalSize
         newSize = max(17, min(int(width / 50), 35))
 
         if abs(actualSize - newSize) < 5:
             return
 
+        self.fontNormalSize = newSize
         self.fontNormal.configure(size=newSize)
         self.fontTitle.configure(size=newSize + 10)
 
     def _onResizeEntry(self, width):
         self.entryWidth = max(200, width / 3)
-        self.ipadyEntry = max(9, int(self.fontNormal.cget("size") / 2))
+        self.ipadyEntry = max(9, int(self.fontNormalSize / 2))
 
         for entry in self.registeredEntry:
             entry.configure(width=self.entryWidth)
             entry.pack_configure(ipady=self.ipadyEntry)
 
     def onResize(self, width):
+        if abs(width - self._lastWidthWindow) < 5:
+            return
+        
+        self._lastWidthWindow = width
         self._onResizeFont(width)
         self._onResizeEntry(width)
 

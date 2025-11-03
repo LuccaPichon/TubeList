@@ -18,8 +18,6 @@ def onResize(root):
     actualSize = theme.fontNormal.cget("size")
     newSize = max(17, min(int(root.winfo_width() / 50), 35))
 
-    print(actualSize, newSize)
-
     if abs(actualSize - newSize) < 5:
         return
 

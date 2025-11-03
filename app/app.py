@@ -57,19 +57,19 @@ def app():
     entryPath = customtkinter.CTkEntry(
         fr1,
         textvariable=path,
-        font=theme.fontNormal
+        font=theme.fontNormal,
     )
     entryPath.pack(pady=10, padx=10, side="left")
 
     buttonPath = customtkinter.CTkButton(
-        fr1, 
-        text="Choose a folder", 
+        fr1,
+        text="Choose a folder",
         corner_radius=50,
         fg_color="#6272a4",
         font=theme.fontNormal,
         command=lambda: chooseFile(entryPath)
     )
-    buttonPath.pack(side="left") 
+    buttonPath.pack(side="left")
 
     resultDownload = tk.StringVar(value="")
     logLabel = tk.Label(
@@ -92,7 +92,7 @@ def app():
     tk.Label(root, text="- Maya Angelou", font=theme.fontNormal).pack()
 
 
-    root.bind("<Configure>", lambda e: onResize(root))
+    root.bind("<Configure>", lambda _: onResize(root))
     root.mainloop()
 
     return 0

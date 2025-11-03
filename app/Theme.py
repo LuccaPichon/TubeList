@@ -10,8 +10,6 @@ class Theme():
             cls._instance._init_theme()
         return cls._instance
 
-
-
     def _init_theme(self):
         # font init
         self._fontNormal = None
@@ -38,7 +36,7 @@ class Theme():
         return self._fontTitle
     
     def _onResizeFont(self, width):
-        actualSize = theme.fontNormal.cget("size")
+        actualSize = self.fontNormal.cget("size")
         newSize = max(17, min(int(width / 50), 35))
 
         if abs(actualSize - newSize) < 5:

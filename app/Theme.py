@@ -25,6 +25,7 @@ class Theme():
         self.bgColor = "#282A36"
         self.fgColor = "#f8f8f2"
         self.highlightBg = "#6272a4"
+        self.btnDownloadTextColor = "#ff79c6"
 
         # entry init
         self.registeredEntry = []

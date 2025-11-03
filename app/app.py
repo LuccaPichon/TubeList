@@ -69,7 +69,7 @@ def app():
         fr1,
         text="Choose a folder",
         corner_radius=50,
-        fg_color="#6272a4",
+        fg_color=theme.highlightBg,
         font=theme.fontNormal,
         command=lambda: chooseFile(entryPath)
     )
@@ -85,8 +85,9 @@ def app():
         root,
         text="Download",
         corner_radius=50,
-        fg_color="#6272a4",
         font=theme.fontNormal,
+        fg_color=theme.highlightBg,
+        text_color=theme.btnDownloadTextColor,
         command=lambda: handleDownload(url=url[0].get(), path=path.get(), resultDownload=resultDownload)
     )
     btnDownload.pack()

@@ -14,15 +14,5 @@ def handleDownload(url, path, resultDownload):
     result = downloadAny(url, path)
     resultDownload.set(result)
 
-def _updateEntrySize(widget):
-    if isinstance(widget, customtkinter.CTkEntry):
-        widget.configure(width=theme.entryWidth)
-
-    for children in widget.winfo_children():
-        _updateEntrySize(children)
-
 def onResize(root):
     theme.onResize(root.winfo_width())
-
-    for widget in root.winfo_children():
-        _updateEntrySize(widget)

@@ -1,3 +1,9 @@
+"""
+!/usr/bin/env python
+-*- coding: utf-8 -*-
+
+Code that manage theme of tkinter window
+"""
 import customtkinter
 
 class Theme():
@@ -21,6 +27,7 @@ class Theme():
         self.highlightBg = "#6272a4"
 
         # entry init
+        self.registeredEntry = []
         self.entryWidth = 640
 
     @property
@@ -48,11 +55,12 @@ class Theme():
     def _onResizeEntry(self, width):
         self.entryWidth = max(200, width / 3)
 
+        for entry in self.registeredEntry:
+            entry.configure(width=self.entryWidth)
+
     def onResize(self, width):
         self._onResizeFont(width)
         self._onResizeEntry(width)
 
 
-
-    
 theme = Theme()

@@ -40,6 +40,7 @@ def _initURL(root):
         width=theme.entryWidth
     )
     entryUrl.pack(pady=10)
+    theme.registeredEntry.append(entryUrl)
 
     return [url, entryUrl]
 
@@ -62,6 +63,7 @@ def app():
         width=theme.entryWidth
     )
     entryPath.pack(pady=10, padx=10, side="left")
+    theme.registeredEntry.append(entryPath)
 
     buttonPath = customtkinter.CTkButton(
         fr1,

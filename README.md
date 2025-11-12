@@ -64,9 +64,3 @@ Built with **Tkinter**, **CustomTkinter**, and **pytubefix**, this project inclu
 
 This project is released under the **MIT License**.
 You are free to use, modify, and distribute it as you wish.
-
----
-
-## Author
-
-GitHub: [LeeBingler](https://github.com/LeeBingler)

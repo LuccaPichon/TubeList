@@ -15,7 +15,10 @@ def _initRoot():
     root.title("MP3 playlist downloader")
     root.state("zoomed")
     root.geometry("1920x1080")
-
+    
+    # Icon setting
+    icon = tk.PhotoImage(file='./MP3-playlist-downloader/images/icon.png') # load image from root of project
+    root.iconphoto(True, icon)
     # Colors settings
     root.configure(background=theme.bgColor)
     root.option_add("*Background", theme.bgColor)

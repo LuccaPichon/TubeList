@@ -16,6 +16,7 @@ def _initRoot():
     root.title("TubeList")
     root.state("zoomed")
     root.geometry("1920x1080")
+    root.minsize(480, 480)
     
     # Icon setting
     icon = tk.PhotoImage(file='./TubeList/images/icon.png') # load image from root of project

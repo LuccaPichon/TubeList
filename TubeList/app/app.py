@@ -13,12 +13,12 @@ from PIL import Image
 
 def _initRoot():
     root = tk.Tk()
-    root.title("MP3 playlist downloader")
+    root.title("TubeList")
     root.state("zoomed")
     root.geometry("1920x1080")
     
     # Icon setting
-    icon = tk.PhotoImage(file='./MP3-playlist-downloader/images/icon.png') # load image from root of project
+    icon = tk.PhotoImage(file='./TubeList/images/icon.png') # load image from root of project
     root.iconphoto(True, icon)
 
     # Colors settings
@@ -29,7 +29,7 @@ def _initRoot():
     return root
 
 def _initTitle(root):
-    title = customtkinter.CTkLabel(root, text="MP3 YT playlist downloader")
+    title = customtkinter.CTkLabel(root, text="Welcome to TubeList")
     title.pack(anchor="center", pady=(50, 0))
     title.configure(font=theme.fontTitle)
 
@@ -67,8 +67,8 @@ def _initPath(root):
     theme.registeredEntry.append(entryPath)
 
     folderImage = customtkinter.CTkImage(
-        light_image=Image.open('./MP3-playlist-downloader/images/folder-icon-size_128.png'),
-        dark_image=Image.open('./MP3-playlist-downloader/images/folder-icon-size_128.png'),
+        light_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
+        dark_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
         size=(32, 32)
     )
 
@@ -88,8 +88,8 @@ def _initPath(root):
 def _initDowload(root, url, entryPath):
     resultDownload = tk.StringVar(value="")
     downloadImage = customtkinter.CTkImage(
-        light_image=Image.open('./MP3-playlist-downloader/images/data-transfer-download-icon-size_64.png'),
-        dark_image=Image.open('./MP3-playlist-downloader/images/data-transfer-download-icon-size_64.png'),
+        light_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
+        dark_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
         size=(32, 32)   # taille désirée
     )
 

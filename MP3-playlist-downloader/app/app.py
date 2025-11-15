@@ -9,6 +9,7 @@ from app.Theme import theme
 
 import tkinter as tk
 import customtkinter
+import tkinter.font as tkFont
 
 def _initRoot():
     root = tk.Tk()
@@ -56,7 +57,7 @@ def app():
 
     url = _initURL(root)
 
-    tk.Label(text="Where to download:", font=theme.fontNormal).pack(anchor="center")
+    tk.Label(text="Where to download:", font=theme.fontNormal).pack(anchor="center", pady=(20, 0))
     fr1 = tk.Frame(root)
     fr1.pack(fill="y", anchor="center")
     entryPath = customtkinter.CTkEntry(

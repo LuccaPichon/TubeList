@@ -23,6 +23,7 @@ class Theme():
         self._fontNormal = None
         self._fontTitle = None
         self.fontNormalSize = 15
+        self.fontFamily = "Comic Sans MS"
         
         # color init
         self.bgColor = "#282A36"
@@ -40,13 +41,13 @@ class Theme():
     @property
     def fontNormal(self):
         if self._fontNormal is None:
-            self._fontNormal = customtkinter.CTkFont(family="Arial", size=15)
+            self._fontNormal = customtkinter.CTkFont(family=self.fontFamily, size=15)
         return self._fontNormal
 
     @property
     def fontTitle(self):
         if self._fontTitle is None:
-            self._fontTitle = customtkinter.CTkFont(family="Arial", size=25, weight="bold")
+            self._fontTitle = customtkinter.CTkFont(family=self.fontFamily, size=25, weight="bold")
         return self._fontTitle
     
     def _onResizeFont(self, width):

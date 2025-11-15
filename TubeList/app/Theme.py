@@ -24,7 +24,7 @@ class Theme():
         self._fontTitle = None
         self._fontSubtitle = None
         self.fontNormalSize = 15
-        self.fontFamily = "Comic Sans MS"
+        self.fontFamily = "Poplar Std"
         
         # color init
         self.bgColor = "#282A36"

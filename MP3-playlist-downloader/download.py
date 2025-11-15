@@ -5,12 +5,13 @@
 from pytubefix.cli import on_progress
 from pytubefix import Playlist, YouTube
 from pytubefix.exceptions import RegexMatchError
+import os
 
 def _downloadAudio(obj, path: str):
     stream = obj.streams.get_audio_only()
     stream.download(output_path=path)
 
-def downloadVideo(url: str, path: str):
+def _downloadVideo(url: str, path: str):
     yt = YouTube(url, on_progress_callback=on_progress)
 
     print(yt.title)
@@ -18,7 +19,7 @@ def downloadVideo(url: str, path: str):
 
     return yt.title
 
-def downloadPlaylist(url: str, path: str):
+def _downloadPlaylist(url: str, path: str):
     pl = Playlist(url)
     listTitle = []
 
@@ -29,14 +30,32 @@ def downloadPlaylist(url: str, path: str):
 
     return listTitle
 
+def _checkPath(path: str):
+    if path == "":
+        path = "./"
+        return False
+
+    if os.path.isdir(path):
+        return False
+    
+    return True
+
 def downloadAny(url: str, path: str):
+    path = path.strip()
+    url = url.strip()
     title = ""
+
+    print(f"path is: *{path}*")
+    if _checkPath(path):
+        return "Path is not valid"
+    
+
     try: 
-        title = downloadVideo(url, path)
+        title = _downloadVideo(url, path)
         return f"Downloaded : {title}"
     except RegexMatchError:
         try:
-            title = downloadPlaylist(url, path)
+            title = _downloadPlaylist(url, path)
             return f"Downloaded : {title} "
         except (RegexMatchError, KeyError) as e:
             return f"404: Url is not a valid youtube url {e}"
@@ -44,7 +63,5 @@ def downloadAny(url: str, path: str):
             print("downloadPlaylist: ", e)
             return e
     except Exception as e:
-        print("downloadVideo: ", e)
+        print("Error downloadVideo: ", e)
         return e
-
-    return False

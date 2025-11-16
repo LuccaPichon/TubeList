@@ -60,6 +60,12 @@ Built with **Tkinter**, **CustomTkinter**, and **pytubefix**, this project inclu
 
 ---
 
+## Feature possible
+
+- Add thumbnails of video downloaded
+- Change format of video downloaded
+---
+
 ## License
 
 This project is released under the **MIT License**.

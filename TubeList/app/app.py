@@ -11,122 +11,143 @@ import tkinter as tk
 import customtkinter
 from PIL import Image
 
-def _initRoot():
-    root = tk.Tk()
-    root.title("TubeList")
-    root.state("zoomed")
-    root.geometry("1920x1080")
-    root.minsize(480, 480)
-    
-    # Icon setting
-    icon = tk.PhotoImage(file='./TubeList/images/icon.png') # load image from root of project
-    root.iconphoto(True, icon)
+class TubeListApp:
+    def __init__(self):
+        self.root = self._initRoot()
 
-    # Colors settings
-    root.configure(background=theme.bgColor)
-    root.option_add("*Background", theme.bgColor)
-    root.option_add("*Foreground", theme.fgColor)
-    root.option_add("*Highlightbackground", theme.highlightBg)
-    return root
+        # Widgets
+        self.entryUrl = None
+        self.entryPath = None
+        self.buttonPath = None
+        self.resultDownload = None
 
-def _initTitle(root):
-    title = customtkinter.CTkLabel(root, text="Welcome to TubeList")
-    title.pack(anchor="center", pady=(50, 0))
-    title.configure(font=theme.fontTitle)
+        # UI build
+        self._initTitle()
+        self._initURL()
+        self._initPath()
+        self._initDownload()
+        self._initFooter()
 
-    subtitle = customtkinter.CTkLabel(root, text="The best free and fast converter for Youtube video to MP3 format")
-    subtitle.pack(anchor="center", pady=(10, 50))
-    subtitle.configure(font=theme.fontSubtitle)
-    return title
+        # Resize behavior
+        self.root.bind("<Configure>", self._onResize)
 
-def _initURL(root):
-    tk.Label(root, text="URL of the playlist / song:", font=theme.fontNormal).pack(anchor="center")
-    entryUrl = customtkinter.CTkEntry(
-        root,
-        font=theme.fontNormal,
-        width=theme.entryWidth + 400,
-        placeholder_text="https://www.youtube.com/watch?v=<Your Video / Playlist>",
-        placeholder_text_color=theme.placeholderColor
-    )
-    entryUrl.pack(pady=10, ipady=10, anchor="center")
-    theme.registeredEntry["entryUrl"] = entryUrl
 
-    return entryUrl
+    def _initRoot(self):
+        root = tk.Tk()
+        root.title("TubeList")
+        root.state("zoomed")
+        root.geometry("1920x1080")
+        root.minsize(480, 480)
 
-def _initPath(root):
-    tk.Label(root, text="Where to download:", font=theme.fontNormal).pack(anchor="center", pady=(20, 0))
-    fr1 = tk.Frame(root)
-    fr1.pack(fill="y", anchor="center")
-    entryPath = customtkinter.CTkEntry(
-        fr1,
-        font=theme.fontNormal,
-        width=theme.entryWidth,
-        placeholder_text="C:/Users/<Username>/Documents/",
-        placeholder_text_color=theme.placeholderColor
-    )
-    entryPath.pack(padx=10, pady=10, ipady=10, side="left", anchor="center")
-    theme.registeredEntry["entryPath"] = entryPath
+        # Icon
+        icon = tk.PhotoImage(file='./TubeList/images/icon.png')
+        root.iconphoto(True, icon)
 
-    folderImage = customtkinter.CTkImage(
-        light_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
-        dark_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
-        size=(32, 32)
-    )
+        # Colors
+        root.configure(background=theme.bgColor)
+        root.option_add("*Background", theme.bgColor)
+        root.option_add("*Foreground", theme.fgColor)
+        root.option_add("*Highlightbackground", theme.highlightBg)
 
-    buttonPath = customtkinter.CTkButton(
-        fr1,
-        text="Choose a folder",
-        corner_radius=50,
-        fg_color=theme.highlightBg,
-        font=theme.fontNormal,
-        image=folderImage,
-        command=lambda: chooseFile(entryPath)
-    )
-    buttonPath.pack(side="left", anchor="center", ipady=10)
+        return root
 
-    return {"entry": entryPath, "button": buttonPath}
 
-def _initDowload(root, url, entryPath):
-    resultDownload = tk.StringVar(value="")
-    downloadImage = customtkinter.CTkImage(
-        light_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
-        dark_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
-        size=(32, 32)
-    )
+    def _initTitle(self):
+        title = customtkinter.CTkLabel(self.root, text="Welcome to TubeList", font=theme.fontTitle)
+        title.pack(anchor="center", pady=(50, 0))
 
-    btnDownload = customtkinter.CTkButton(
-        root,
-        text="Download",
-        corner_radius=50,
-        font=theme.fontNormal,
-        fg_color=theme.btnDownloadFgColor,
-        hover_color=theme.btnDownloadHoverColor,
-        image=downloadImage,
-        command=lambda: handleDownload(url=url.get(), path=entryPath.get(), resultDownload=resultDownload)
-    )
-    btnDownload.pack(anchor="center", pady=20, ipadx=15, ipady=15)
+        subtitle = customtkinter.CTkLabel(
+            self.root,
+            text="The best free and fast converter for Youtube playlist to MP3 format",
+            font=theme.fontSubtitle
+        )
+        subtitle.pack(anchor="center", pady=(10, 50))
 
-    return {"result": resultDownload, "button": btnDownload}
 
-def app():
-    root = _initRoot()
+    def _initURL(self):
+        tk.Label(self.root, text="URL of the playlist / song:", font=theme.fontNormal).pack(anchor="center")
 
-    title = _initTitle(root)
-    entryUrl = _initURL(root)
-    path = _initPath(root)
-    download = _initDowload(root, entryUrl, path.get("entry"))
+        self.entryUrl = customtkinter.CTkEntry(
+            self.root,
+            font=theme.fontNormal,
+            width=theme.entryWidth + 400,
+            placeholder_text="https://www.youtube.com/watch?v=<Your Playlist>",
+            placeholder_text_color=theme.placeholderColor
+        )
+        self.entryUrl.pack(pady=10, ipady=10, anchor="center")
+        theme.registeredEntry["entryUrl"] = self.entryUrl
 
-    logLabel = tk.Label(
-        root,
-        textvariable=download.get("result"),
-        font=theme.fontNormal,
-    )
-    logLabel.pack(anchor="center", pady=30)
 
-    tk.Label(root, text="Nothing will work unless you do.", font=theme.fontNormal).pack(anchor="center")
-    tk.Label(root, text="- Maya Angelou", font=theme.fontNormal).pack(anchor="center")
+    def _initPath(self):
+        tk.Label(self.root, text="Where to download:", font=theme.fontNormal).pack(anchor="center", pady=(20, 0))
 
-    root.bind("<Configure>", lambda _: theme.onResize(root.winfo_width(), path.get("button").winfo_width()))
-    root.mainloop()
+        frame = tk.Frame(self.root)
+        frame.pack(anchor="center", pady=10)
 
-    return 0
+        self.entryPath = customtkinter.CTkEntry(
+            frame,
+            font=theme.fontNormal,
+            width=theme.entryWidth,
+            placeholder_text="C:/Users/<Username>/Documents/",
+            placeholder_text_color=theme.placeholderColor
+        )
+        self.entryPath.pack(padx=10, ipady=10, side="left")
+        theme.registeredEntry["entryPath"] = self.entryPath
+
+        folderImg = customtkinter.CTkImage(
+            light_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
+            dark_image=Image.open('./TubeList/images/folder-icon-size_128.png'),
+            size=(32, 32)
+        )
+
+        self.buttonPath = customtkinter.CTkButton(
+            frame,
+            text="Choose a folder",
+            font=theme.fontNormal,
+            corner_radius=50,
+            fg_color=theme.highlightBg,
+            image=folderImg,
+            command=lambda: chooseFile(self.entryPath)
+        )
+        self.buttonPath.pack(side="left", ipady=10)
+
+
+    def _initDownload(self):
+        self.resultDownload = tk.StringVar(value="")
+
+        downloadImg = customtkinter.CTkImage(
+            light_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
+            dark_image=Image.open('./TubeList/images/data-transfer-download-icon-size_64.png'),
+            size=(32, 32)
+        )
+
+        button = customtkinter.CTkButton(
+            self.root,
+            text="Download",
+            corner_radius=50,
+            font=theme.fontNormal,
+            fg_color=theme.btnDownloadFgColor,
+            hover_color=theme.btnDownloadHoverColor,
+            image=downloadImg,
+            command=lambda: handleDownload(
+                url=self.entryUrl.get(),
+                path=self.entryPath.get(),
+                resultDownload=self.resultDownload
+            )
+        )
+        button.pack(anchor="center", pady=20, ipadx=15, ipady=15)
+
+        tk.Label(self.root, textvariable=self.resultDownload, font=theme.fontNormal).pack(anchor="center", pady=30)
+
+
+    def _initFooter(self):
+        tk.Label(self.root, text="Nothing will work unless you do.", font=theme.fontNormal).pack(anchor="center")
+        tk.Label(self.root, text="- Maya Angelou", font=theme.fontNormal).pack(anchor="center")
+
+
+    def _onResize(self, event):
+        theme.onResize(self.root.winfo_width(), self.buttonPath.winfo_width())
+
+
+    def run(self):
+        self.root.mainloop()

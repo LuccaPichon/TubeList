@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from app.app import app
+from app.app import TubeListApp
 
 def main():
-    return app()
+    app = TubeListApp()
+    app.run()
 
 if __name__ == "__main__":
     main()

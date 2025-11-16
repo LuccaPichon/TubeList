@@ -41,6 +41,7 @@ class Theme():
 
         # loadbar init
         self.loadbar = None
+        self.loadbarPlaylist = None
         self.loadbarWidth = 0
 
     @property
@@ -85,7 +86,9 @@ class Theme():
 
     def _onResizeLoadbar(self, width):
         self.loadbarWidth = width / 2
+
         self.loadbar.configure(width=self.loadbarWidth)
+        self.loadbarPlaylist.configure(width=self.loadbarWidth)
 
     def onResize(self, width, buttonPathWidth):
         if abs(width - self._lastWidthWindow) < 5:

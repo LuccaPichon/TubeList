@@ -1,4 +1,3 @@
-from download import downloadAny
 import customtkinter
 import tkinter as tk
 

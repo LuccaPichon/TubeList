@@ -33,6 +33,7 @@ class TubeListApp:
         self._initPath()
         self._initDownload()
         self._initLoadbar()
+        self._initLoadbarPlaylist()
         self._initLog()
         self._initFooter()
 
@@ -124,7 +125,8 @@ class TubeListApp:
             resultString = downloadAny(
                 self.entryUrl.get(), 
                 self.entryPath.get(), 
-                self._progress_callback
+                self._progress_callback,
+                self._progressPlaylist
             )
             self.resultDownload.set(resultString)
 
@@ -153,12 +155,14 @@ class TubeListApp:
         
 
     def _progress_callback(self, percent):
-        def run():
-            self.progress.set(percent)
-            self.progressString.set(f"{percent}%")
-        
-        self.root.after(0, lambda: run)
+        self.progress.set(percent)
+        self.progressString.set(f"Video: {int(percent * 100)}%")
 
+
+    def _progressPlaylist(self, index, total):
+        percent = index / total
+        self.progressPlaylist.set(percent)
+        self.progressPlaylistString.set(f"Playlist: {int(percent * 100)}%")
 
     def _initLoadbar(self):
         self.progressFrame = tk.Frame(self.root, width=theme.loadbarWidth)
@@ -169,8 +173,20 @@ class TubeListApp:
         self.progress.set(0)
         theme.loadbar = self.progress
 
-        self.progressString = tk.StringVar(value="0%")
+        self.progressString = tk.StringVar(value="Video: 0%")
         customtkinter.CTkLabel(self.progressFrame, textvariable=self.progressString, font=theme.fontNormal).pack(side="left", ipadx=15)
+
+    def _initLoadbarPlaylist(self):
+        self.progressFramePlaylist = tk.Frame(self.root, width=theme.loadbarWidth)
+        self.progressFramePlaylist.pack(anchor="center", pady=10)
+
+        self.progressPlaylist = customtkinter.CTkProgressBar(self.progressFramePlaylist, width=800, progress_color=theme.btnDownloadFgColor)
+        self.progressPlaylist.pack(pady=20, side="right", fill="x")
+        self.progressPlaylist.set(0)
+        theme.loadbarPlaylist = self.progressPlaylist
+
+        self.progressPlaylistString = tk.StringVar(value="Playlist: 0%")
+        customtkinter.CTkLabel(self.progressFramePlaylist, textvariable=self.progressPlaylistString, font=theme.fontNormal).pack(side="left", ipadx=15)
 
 
     def _initLog(self):

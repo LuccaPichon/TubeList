@@ -4,12 +4,15 @@
 
 Code that manage all the tkinter window
 """
-from app.utilsApp import chooseFile, handleDownload
+from app.utilsApp import chooseFile
 from app.Theme import theme
 
 import tkinter as tk
 import customtkinter
 from PIL import Image
+
+from download import downloadAny
+import threading
 
 class TubeListApp:
     def __init__(self):
@@ -20,12 +23,17 @@ class TubeListApp:
         self.entryPath = None
         self.buttonPath = None
         self.resultDownload = None
+        self.progress = None
+        self.progressString = None
+        self.progressFrame = None
 
         # UI build
         self._initTitle()
         self._initURL()
         self._initPath()
         self._initDownload()
+        self._initLoadbar()
+        self._initLog()
         self._initFooter()
 
         # Resize behavior
@@ -111,6 +119,16 @@ class TubeListApp:
         )
         self.buttonPath.pack(side="left", ipady=10)
 
+    def _handleDownload(self):
+        def run():
+            resultString = downloadAny(
+                self.entryUrl.get(), 
+                self.entryPath.get(), 
+                self._progress_callback
+            )
+            self.resultDownload.set(resultString)
+
+        threading.Thread(target=run, daemon=True).start()
 
     def _initDownload(self):
         self.resultDownload = tk.StringVar(value="")
@@ -129,15 +147,34 @@ class TubeListApp:
             fg_color=theme.btnDownloadFgColor,
             hover_color=theme.btnDownloadHoverColor,
             image=downloadImg,
-            command=lambda: handleDownload(
-                url=self.entryUrl.get(),
-                path=self.entryPath.get(),
-                resultDownload=self.resultDownload
-            )
+            command=self._handleDownload
         )
         button.pack(anchor="center", pady=20, ipadx=15, ipady=15)
+        
 
-        tk.Label(self.root, textvariable=self.resultDownload, font=theme.fontNormal).pack(anchor="center", pady=30)
+    def _progress_callback(self, percent):
+        def run():
+            self.progress.set(percent)
+            self.progressString.set(f"{percent}%")
+        
+        self.root.after(0, lambda: run)
+
+
+    def _initLoadbar(self):
+        self.progressFrame = tk.Frame(self.root, width=theme.loadbarWidth)
+        self.progressFrame.pack(anchor="center", pady=10)
+
+        self.progress = customtkinter.CTkProgressBar(self.progressFrame, width=800, progress_color=theme.btnDownloadFgColor)
+        self.progress.pack(pady=20, side="right", fill="x")
+        self.progress.set(0)
+        theme.loadbar = self.progress
+
+        self.progressString = tk.StringVar(value="0%")
+        customtkinter.CTkLabel(self.progressFrame, textvariable=self.progressString, font=theme.fontNormal).pack(side="left", ipadx=15)
+
+
+    def _initLog(self):
+        tk.Label(self.root, textvariable=self.resultDownload, font=theme.fontNormal, wraplength=1500).pack(anchor="center", pady=30)
 
 
     def _initFooter(self):

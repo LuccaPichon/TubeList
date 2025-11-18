@@ -4,7 +4,7 @@
 
 Code that manage all the tkinter window
 """
-from app.utilsApp import chooseFile
+from app.utilsApp import chooseFile, notificationDownloadEnd
 from app.Theme import theme
 from app.Loadbars import LoadBars
 
@@ -151,6 +151,18 @@ class TubeListApp:
             command=self._handleDownload
         )
         button.pack(anchor="center", pady=20, ipadx=15, ipady=15)
+
+        button2 = customtkinter.CTkButton(
+            self.root,
+            text="Test",
+            corner_radius=50,
+            font=theme.fontNormal,
+            fg_color=theme.btnDownloadFgColor,
+            hover_color=theme.btnDownloadHoverColor,
+            image=downloadImg,
+            command=notificationDownloadEnd
+        )
+        button2.pack(anchor="center", pady=20, ipadx=15, ipady=15)
 
 
     def _initLog(self):

@@ -4,7 +4,7 @@
 
 Code that manage all the tkinter window
 """
-from app.utilsApp import chooseFile
+from app.utilsApp import chooseFile, notificationDownloadEnd
 from app.Theme import theme
 from app.Loadbars import LoadBars
 
@@ -121,13 +121,14 @@ class TubeListApp:
     def _handleDownload(self):
         def run():
             self.loadBars.resetBars()
-            resultString = downloadAny(
+            resultDownload = downloadAny(
                 self.entryUrl.get(),
                 self.entryPath.get(),
                 self.loadBars.progressCallbackVideo,
                 self.loadBars.progressCallbackPlaylist
             )
-            self.resultDownload.set(resultString)
+            self.resultDownload.set(f'"{resultDownload["title"]}" is downloaded')
+            notificationDownloadEnd(resultDownload)
 
         threading.Thread(target=run, daemon=True).start()
 

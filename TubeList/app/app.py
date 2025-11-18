@@ -121,14 +121,14 @@ class TubeListApp:
     def _handleDownload(self):
         def run():
             self.loadBars.resetBars()
-            resultString = downloadAny(
+            resultDownload = downloadAny(
                 self.entryUrl.get(),
                 self.entryPath.get(),
                 self.loadBars.progressCallbackVideo,
                 self.loadBars.progressCallbackPlaylist
             )
-            self.resultDownload.set(resultString)
-            notificationDownloadEnd(resultString)
+            self.resultDownload.set(f'"{resultDownload["title"]}" is downloaded')
+            notificationDownloadEnd(resultDownload)
 
         threading.Thread(target=run, daemon=True).start()
 

@@ -9,10 +9,10 @@ def chooseFile(entry):
         entry.delete(0, tk.END)
         entry.insert(0, file)
 
-def notificationDownloadEnd(videoTitle: str):
+def notificationDownloadEnd(resultDownload):
     notification.notify(
         title = "TubeList",
-        message = f"Your video is downloaded\n{videoTitle}",
+        message = f"Your {resultDownload["type"]} is downloaded:\n{resultDownload["title"]}",
         ticker = "TubeList",
         app_icon = "./TubeList/images/icon.ico",
         timeout = 10,

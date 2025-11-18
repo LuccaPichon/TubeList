@@ -64,17 +64,20 @@ def downloadAny(url: str, path: str, progressCallbackVideo, progressCallbackPlay
     path = path.strip()
     url = url.strip()
     title = ""
+    typeDownload = ""
 
     if _checkPath(path):
         return "Path is not valid"
 
     try: 
         title = _downloadVideo(url, path, progressCallbackVideo)
-        return f"Downloaded : {title}"
+        typeDownload = "video"
+        return {"title" : title, "type" : typeDownload}
     except RegexMatchError:
         try:
             title = _downloadPlaylist(url, path, progressCallbackVideo, progressCallbackPlaylist)
-            return f"Downloaded : {title} "
+            typeDownload = "playlist"
+            return {"title" : title, "type" : typeDownload}
         except (RegexMatchError, KeyError) as e:
             return f"404: Url is not a valid youtube url\n\n{e}"
         except BotDetection as e:
